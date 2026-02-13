@@ -3,13 +3,12 @@
           <head>
             <title data-id="th-modified">Web Page</title>
             
-          <meta property="og:title" content="Web Page" data-id="th-modified" ><meta name="description" content="code" data-id="th-modified" ><meta property="og:description" content="code" data-id="th-modified" ><meta property="og:image" content="https://tiiny.host/assets/logo-purple-bg.png" data-id="th-modified" ><meta property="og:url" content="https://gilberto-elena.tiiny.site/" data-id="th-modified" ><meta property="og:type" content="website" data-id="th-modified" ><script defer data-domain="gilberto-elena.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script><script type="text/javascript" src="https://tiiny.host/ad-script.js"></script></head>
-          <body>
+              <body>
             <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💝 For My Love Elena</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Dancing+Script:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
@@ -496,7 +495,6 @@
             font-weight: 700;
         }
 
-        /* Original size GIF container - NO CROPPING */
         .gif-container {
             margin: 20px auto;
             border-radius: 20px;
@@ -512,6 +510,21 @@
             height: auto;
             display: block;
             border-radius: 20px;
+            object-fit: contain;
+        }
+
+        /* MOBILE: Much smaller GIF */
+        @media screen and (max-width: 480px) {
+            .gif-container {
+                margin: 15px auto;
+                max-width: 90%;
+            }
+            
+            .gif-container img {
+                max-height: 350px; /* Small height for mobile */
+                width: auto;
+                margin: 0 auto;
+            }
         }
 
         /* Feedback animations */
@@ -893,6 +906,56 @@
         @keyframes fadeOut {
             to { opacity: 0; transform: scale(0.95); }
         }
+
+
+                /* MOBILE OPTIMIZATIONS */
+        @media screen and (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                padding: 15px 12px;
+            }
+            
+            .card {
+                padding: 25px 18px;
+                border-radius: 20px;
+            }
+            
+            .front-page h1 {
+                font-size: 2.2rem;
+            }
+            
+            .front-page .main-heart {
+                font-size: 3.5rem;
+            }
+            
+            .question {
+                font-size: 1.15rem;
+            }
+            
+            button {
+                padding: 14px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .question-image {
+                max-width: 100%;
+                height: 200px;
+                transform: scale(1);
+            }
+        }
+
+        /* GPU Acceleration for smooth animations */
+        .heart, .confetti {
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        /* Touch optimization */
+        button {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
     </style>
 <base target="_blank">
 <base target="_blank">
@@ -958,7 +1021,7 @@
             <p><strong>System Malfunction Code: 404-NOPE</strong></p>
             <p>❌ ERROR: Answer "No" has been permanently deleted from the universe! ❌</p>
             <p>😱 The "No" button is broken, frozen, kaput, destroyed! 😱</p>
-            <p>Only "Yes" is operational. Sorry, I don't make the rules! 🤷‍♀️💕</p>
+            <p>Only "Yes" is operational. Sorry, I don't make the rules! 🤷‍♂️💕</p>
             <button class="close-btn" onclick="closeModal()">Fine, I'll Click Yes 😂</button>
         </div>
     </div>
@@ -999,18 +1062,22 @@
         // Initialize hearts animation
         function createHearts() {
             const container = document.getElementById('heartsContainer');
-            const symbols = ['💗', '💕', '💖', '💝', '💘', '💓', '💞'];
-
-            for (let i = 0; i < 25; i++) {
+            const symbols = ['💗', '💕', '💖', '💝', '💘'];
+            
+            // Reduce hearts on mobile for better performance
+            const isMobile = window.innerWidth <= 480;
+            const heartCount = isMobile ? 10 : 20;
+            
+            for (let i = 0; i < heartCount; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'heart';
                 heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
                 heart.style.left = Math.random() * 100 + '%';
                 heart.style.animationDelay = Math.random() * 12 + 's';
-                heart.style.fontSize = (Math.random() * 15 + 20) + 'px';
+                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
                 container.appendChild(heart);
             }
-        }
+}
 
         // Start Quiz from Front Page
         function startQuiz() {
@@ -1075,8 +1142,21 @@
         function showCorrectFeedback() {
             const overlay = document.getElementById('feedbackOverlay');
 
+            // Question 0 (index 0) - Wine Tasting: wine glasses
+            if (currentQuestion === 0) {
+                overlay.innerHTML = `
+                    <div class="soft-kiss-container">
+                        <div class="soft-kiss">🥂</div>
+                        <div class="kiss-sparkle">✨</div>
+                        <div class="kiss-sparkle">💖</div>
+                        <div class="kiss-sparkle">✨</div>
+                        <div class="kiss-sparkle">💕</div>
+                    </div>
+                `;
+            }
+
             // Question 1 (index 1) - First kiss: soft kiss
-            if (currentQuestion === 1) {
+            else if (currentQuestion === 1) {
                 overlay.innerHTML = `
                     <div class="soft-kiss-container">
                         <div class="soft-kiss">💋</div>
@@ -1130,7 +1210,7 @@
                     overlay.innerHTML = '';
                     proceedToNextQuestion();
                 }, 400);
-            }, 1200);
+            }, 600);
         }
 
         // Show wrong feedback with ALL THREE EMOJIS - NO MESSAGE
@@ -1172,11 +1252,11 @@
             "Nice try! 😜",
             "Too slow! 💨",
             "Catch me if you can! 🏃‍♀️",
-            "Nope nope nope! 🙅‍♀️",
+            "Nope nope nope! 🙅",
             "Almost got me! 🤭",
             "Not today! ✨",
             "So close! 🎯",
-            "Okay, you win! Click Yes! 💖"
+            "Okay, you win! Click No! 💔"
         ];
 
         const yesButtonGrowthMessages = [
@@ -1257,7 +1337,7 @@
                     if (placeholder) {
                         placeholder.remove();
                     }
-                }, 600);
+                }, 2500);
             }
         }
 
